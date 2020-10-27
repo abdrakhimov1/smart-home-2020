@@ -1,5 +1,8 @@
 package ru.sbt.mipt.oop.light;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Light {
     private boolean isOn;
     private final String id;

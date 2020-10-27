@@ -13,9 +13,12 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
                 <configuration>
                     <source>10</source>
                     <target>10</target>
@@ -23,6 +26,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.4.RELEASE</version>
+    </parent>
 
     <dependencies>
         <dependency>
@@ -42,6 +51,15 @@
             <artifactId>spring-context</artifactId>
             <version>5.2.9.RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>2.3.4.RELEASE</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 </project>

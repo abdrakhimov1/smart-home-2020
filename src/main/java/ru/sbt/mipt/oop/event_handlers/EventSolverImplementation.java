@@ -1,8 +1,10 @@
 package ru.sbt.mipt.oop.event_handlers;
+import org.springframework.stereotype.Component;
 import ru.sbt.mipt.oop.home.SmartHome;
 
 import java.util.ArrayList;
 
+@Component
 public class EventSolverImplementation implements EventSolverWithEvents{
     ArrayList<GeneralEvent> events;
     LightEventHandler lightEventHandler = new LightEventHandler();

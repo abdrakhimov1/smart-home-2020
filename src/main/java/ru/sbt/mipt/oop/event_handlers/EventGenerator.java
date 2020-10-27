@@ -1,5 +1,8 @@
 package ru.sbt.mipt.oop.event_handlers;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class EventGenerator {
 
     SensorEvent event = getNextSensorEvent();

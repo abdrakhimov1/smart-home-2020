@@ -1,5 +1,8 @@
 package ru.sbt.mipt.oop.door;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Door {
     private final String id;
     private boolean isOpen;

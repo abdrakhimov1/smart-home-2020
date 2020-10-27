@@ -10,37 +10,11 @@ import ru.sbt.mipt.oop.home.SmartHome;
 
 @Configuration
 public class SpringConfiguration {
-
     @Bean
-    EventSolverWithEvents eventSolver(){
-        return new EventSolverImplementation();
-    }
-
-    @Bean
-    Adapter eventSolverImplementationAdapter(){
-        return new Adapter(eventSolver(), smartHome());
-    }
-
-    @Bean
-    SmartHome smartHome() {
-        return new HomeConditionImplementation().smartHomeCondition();
-    }
-
-    @Bean
-    SensorEventsManager sensorEventsManager() {
+    SensorEventsManager sensorEventsManager(SmartHome smartHome) {
         SensorEventsManager sensorEventsManager = new SensorEventsManager();
-        sensorEventsManager.registerEventHandler(eventSolverImplementationAdapter());
+        sensorEventsManager.registerEventHandler(new Adapter(new EventSolverImplementation(), smartHome));
         return sensorEventsManager;
-    }
-
-    @Bean
-    EventGenerator eventGenerator(){
-        return new EventGenerator();
-    }
-
-    @Bean
-    EventProcessor eventProcessor(){
-        return new EventProcessor(smartHome(), eventSolver(), eventGenerator());
     }
 
 }
