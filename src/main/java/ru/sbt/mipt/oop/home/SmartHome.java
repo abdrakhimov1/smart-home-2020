@@ -4,7 +4,7 @@ import ru.sbt.mipt.oop.alarm.Alarm;
 
 import java.util.Collection;
 
-public class SmartHome {
+public class SmartHome implements Actionable {
 
     Collection<Room> rooms;
 
@@ -30,5 +30,11 @@ public class SmartHome {
 
     public Alarm getAlarm() {
         return alarm;
+    }
+
+    @Override
+    public void execute(Action action) {
+        rooms.forEach(room -> room.execute(action));
+        action.accept(this);
     }
 }
