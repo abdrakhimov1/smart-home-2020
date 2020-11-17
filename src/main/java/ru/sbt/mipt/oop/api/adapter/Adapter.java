@@ -17,10 +17,8 @@ public class Adapter implements com.coolcompany.smarthome.events.EventHandler {
     private final EventSolver eventSolver;
     private SmartHome smartHome;
     private final Collection<SensorEventGetter> sensorEventGetters = new ArrayList<>();
-    private final DoorSensorEventGetterImpl doorSensorEventGetter = new DoorSensorEventGetterImpl();
-    private final LightSensorEventGetterImpl lightSensorEventGetter = new LightSensorEventGetterImpl();
 
-    public Adapter(EventSolver eventSolver, SmartHome smartHome) {
+    public Adapter(EventSolver eventSolver, SmartHome smartHome, SensorEventGetter doorSensorEventGetter, SensorEventGetter lightSensorEventGetter) {
         this.eventSolver = eventSolver;
         this.smartHome = smartHome;
         this.sensorEventGetters.add(doorSensorEventGetter);

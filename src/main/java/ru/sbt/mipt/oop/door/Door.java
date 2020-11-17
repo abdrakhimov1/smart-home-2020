@@ -1,9 +1,9 @@
 package ru.sbt.mipt.oop.door;
 
-import org.springframework.stereotype.Component;
+import ru.sbt.mipt.oop.Action;
+import ru.sbt.mipt.oop.Actionable;
 
-@Component
-public class Door {
+public class Door implements Actionable {
     private final String id;
     private boolean isOpen;
     private boolean isLocked;
@@ -12,6 +12,10 @@ public class Door {
         this.isOpen = isOpen;
         this.id = id;
         this.isLocked = isLocked;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
     }
 
     public String getId() {
@@ -23,5 +27,10 @@ public class Door {
     }
     public void setLocked(boolean locked){
         isLocked = locked;
+    }
+
+    @Override
+    public void execute(Action action) {
+        action.accept(this);
     }
 }

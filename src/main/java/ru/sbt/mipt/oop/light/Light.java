@@ -1,9 +1,9 @@
 package ru.sbt.mipt.oop.light;
 
-import org.springframework.stereotype.Component;
+import ru.sbt.mipt.oop.Action;
+import ru.sbt.mipt.oop.Actionable;
 
-@Component
-public class Light {
+public class Light implements Actionable {
     private boolean isOn;
     private final String id;
 
@@ -16,7 +16,16 @@ public class Light {
         return id;
     }
 
+    public boolean isOn() {
+        return isOn;
+    }
+
     public void setOn(boolean on) {
         isOn = on;
+    }
+
+    @Override
+    public void execute(Action action) {
+        action.accept(this);
     }
 }

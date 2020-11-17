@@ -10,14 +10,17 @@ public class EventProcessor {
     EventSolverDecorator eventSolverDecorator;
 
 
+
     public EventProcessor(SmartHome smartHome, EventSolverWithEvents eventSolver, EventGenerator eventGenerator) {
         this.eventSolver = eventSolver;
         this.eventGenerator = eventGenerator;
         this.smartHome = smartHome;
         this.eventSolverDecorator = new EventSolverDecorator(eventSolver, new AlarmEventHandler(smartHome), smartHome);
+
     }
 
     public void processEvent(){
+        EventGenerator eventGenerator = new EventGenerator();
         SensorEvent event = eventGenerator.makeEvent();
         while (event != null) {
             System.out.println("Got event: " + event);

@@ -1,14 +1,20 @@
 package ru.sbt.mipt.oop.api.adapter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.sbt.mipt.oop.event_handlers.SensorEvent;
 import ru.sbt.mipt.oop.event_handlers.SensorEventType;
 
+import javax.annotation.PostConstruct;
+import java.util.Map;
+
 public class DoorSensorEventGetterImpl implements SensorEventGetter {
+    Map typeGetter;
+    public DoorSensorEventGetterImpl(Map typeGetter) {
+        this.typeGetter = typeGetter;
+    }
+
     @Override
     public SensorEventType getType(String name) {
-        if (name.equals("DoorIsOpen")) return SensorEventType.DOOR_OPEN;
-        if (name.equals("DoorIsClosed")) return SensorEventType.DOOR_CLOSED;
-        if (name.equals("DoorIsLocked")) return SensorEventType.DOOR_LOCKED;
-        if (name.equals("DoorIsUnlocked")) return SensorEventType.DOOR_UNLOCKED;
-        return null;
+        return (SensorEventType) typeGetter.get(name);
     }
 }

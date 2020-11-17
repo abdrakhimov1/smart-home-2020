@@ -1,9 +1,8 @@
 package ru.sbt.mipt.oop.event_handlers;
 
-import org.springframework.stereotype.Component;
+import java.util.Iterator;
 
-@Component
-public class EventGenerator {
+public class EventGenerator implements Iterator<SensorEvent> {
 
     SensorEvent event = getNextSensorEvent();
 
@@ -16,6 +15,16 @@ public class EventGenerator {
     }
 
     public SensorEvent makeEvent() {
+        return getNextSensorEvent();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public SensorEvent next() {
         return getNextSensorEvent();
     }
 }

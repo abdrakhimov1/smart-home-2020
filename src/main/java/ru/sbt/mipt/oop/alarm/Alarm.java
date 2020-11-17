@@ -17,10 +17,6 @@ public class Alarm {
         this.state = state;
     }
 
-    public AlarmState getState() {
-        return state;
-    }
-
     int getCode() {
         return code;
     }
@@ -35,5 +31,13 @@ public class Alarm {
 
     public void alarm(){
         state.alarm();
+    }
+
+    public boolean isAlarmed() {
+        return state instanceof ActivateState;
+    }
+
+    public boolean isWarning() {
+        return state instanceof WarningState;
     }
 }

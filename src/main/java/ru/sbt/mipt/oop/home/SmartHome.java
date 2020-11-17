@@ -1,12 +1,10 @@
 package ru.sbt.mipt.oop.home;
-
-import org.springframework.stereotype.Component;
+import ru.sbt.mipt.oop.Action;
+import ru.sbt.mipt.oop.Actionable;
 import ru.sbt.mipt.oop.alarm.Alarm;
-
 import java.util.Collection;
 
-@Component
-public class SmartHome {
+public class SmartHome implements Actionable {
 
     private Collection<Room> rooms;
     private Alarm alarm;
@@ -25,5 +23,13 @@ public class SmartHome {
 
     public Collection<Room> getRooms() {
         return rooms;
+    }
+
+    @Override
+    public void execute(Action action) {
+        action.accept(this);
+        for (Room room : rooms){
+            room.execute(action);
+        }
     }
 }
