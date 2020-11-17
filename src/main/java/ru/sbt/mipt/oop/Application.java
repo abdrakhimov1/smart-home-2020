@@ -1,26 +1,16 @@
 package ru.sbt.mipt.oop;
 
-import ru.sbt.mipt.oop.condition.HomeConditionImplementation;
-import ru.sbt.mipt.oop.event_handlers.*;
-import ru.sbt.mipt.oop.home.SmartHome;
-import ru.sbt.mipt.oop.rc.Keys;
-import ru.sbt.mipt.oop.rc.UserRemoteController;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import com.coolcompany.smarthome.events.SensorEventsManager;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import ru.sbt.mipt.oop.spring.utils.SpringConfiguration;
 
 
 public class Application {
+    public static void main(String... args) {
 
-    public static void main(String... args) throws IOException {
-        // считываем состояние дома из файла
-        HomeConditionImplementation homeConditionImplementation = new HomeConditionImplementation();
-        SmartHome smartHome = homeConditionImplementation.smartHomeCondition();
-        smartHome.setAlarm();
-        // начинаем цикл обработки событий
-        List<GeneralEvent> eventHandlersList = Arrays.asList(new LightEventHandler(), new DoorEventHandler(), new ClosedHallDoorEventHandler(), new AlarmEventHandler());
-        EventProcessor eventProcessor = new EventProcessor(smartHome, new EventGenerator(), new EventSolverImplementation(eventHandlersList), new EventSolverDecorator(eventHandlersList, smartHome));
-        eventProcessor.processEvent();
+        AbstractApplicationContext context = new AnnotationConfigApplicationContext(SpringConfiguration.class);
+        SensorEventsManager sensorEventsManager = context.getBean(SensorEventsManager.class);
+        sensorEventsManager.start();
     }
 }

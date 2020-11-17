@@ -17,16 +17,16 @@ public class HomeBuilder {
 
     public static void main(String[] args) throws IOException {
         Room kitchen = new Room(Arrays.asList(new Light("1", false), new Light("2", true)),
-                Arrays.asList(new Door(false, "1")),
+                Arrays.asList(new Door(false, "1", false)),
                 "kitchen");
         Room bathroom = new Room(Arrays.asList(new Light("3", true)),
-                Arrays.asList(new Door(false, "2")),
+                Arrays.asList(new Door(false, "2", false)),
                 "bathroom");
         Room bedroom = new Room(Arrays.asList(new Light("4", false), new Light("5", false), new Light("6", false)),
-                Arrays.asList(new Door(true, "3")),
+                Arrays.asList(new Door(true, "3", false)),
                 "bedroom");
         Room hall = new Room(Arrays.asList(new Light("7", false), new Light("8", false), new Light("9", false)),
-                Arrays.asList(new Door(false, "4")),
+                Arrays.asList(new Door(false, "4", false)),
                 "hall");
         SmartHome smartHome = new SmartHome(Arrays.asList(kitchen, bathroom, bedroom, hall), new Alarm(0));
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -37,5 +37,4 @@ public class HomeBuilder {
             writer.write(jsonString);
         }
     }
-
 }

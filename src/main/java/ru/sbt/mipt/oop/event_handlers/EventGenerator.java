@@ -1,6 +1,8 @@
 package ru.sbt.mipt.oop.event_handlers;
 
-public class EventGenerator {
+import java.util.Iterator;
+
+public class EventGenerator implements Iterator<SensorEvent> {
 
     SensorEvent event = getNextSensorEvent();
 
@@ -13,6 +15,16 @@ public class EventGenerator {
     }
 
     public SensorEvent makeEvent() {
+        return getNextSensorEvent();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public SensorEvent next() {
         return getNextSensorEvent();
     }
 }

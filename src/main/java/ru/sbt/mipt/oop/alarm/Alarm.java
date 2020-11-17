@@ -1,5 +1,8 @@
 package ru.sbt.mipt.oop.alarm;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Alarm {
 
     private AlarmState state;
@@ -12,10 +15,6 @@ public class Alarm {
 
     public void changeState(AlarmState state) {
         this.state = state;
-    }
-
-    public AlarmState getState() {
-        return state;
     }
 
     int getCode() {
@@ -32,5 +31,13 @@ public class Alarm {
 
     public void alarm(){
         state.alarm();
+    }
+
+    public boolean isAlarmed() {
+        return state instanceof ActivateState;
+    }
+
+    public boolean isWarning() {
+        return state instanceof WarningState;
     }
 }

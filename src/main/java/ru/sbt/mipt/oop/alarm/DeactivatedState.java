@@ -2,14 +2,14 @@ package ru.sbt.mipt.oop.alarm;
 
 public class DeactivatedState implements AlarmState {
 
-    Alarm alarm;
+    private final Alarm alarm;
 
     public DeactivatedState(Alarm alarm) { this.alarm = alarm; }
 
     @Override
     public void activate(int code) {
         System.out.println("Smart Alarm is on!");
-        alarm.changeState(new ActivateStateImplementation(alarm));
+        alarm.changeState(new ActivateState(alarm));
     }
 
     @Override
