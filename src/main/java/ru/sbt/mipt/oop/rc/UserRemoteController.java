@@ -3,31 +3,25 @@ package ru.sbt.mipt.oop.rc;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class UserRemoteController implements RemoteControl{
 
     private final String id;
-    private final HashMap<String, Command> keysCommandHashMap = new HashMap<>();
+    private HashMap<String, Command> keysCommands = new HashMap<>();
 
-    public UserRemoteController(List<Keys> keys, String id){
-        var list = List.of("A", "B", "C", "D", "1", "2", "3", "4");
+    public UserRemoteController(String id, HashMap commands){
         this.id = id;
-        for (String key : list) {
-            keysCommandHashMap.put(key, null);
-        }
+        this.keysCommands = commands;
     }
 
     @Override
     public void onButtonPressed(String buttonCode, String rcId) {
         try {
-            keysCommandHashMap.get(buttonCode).execute();
+            keysCommands.get(buttonCode).execute();
         } catch (IllegalArgumentException e) {
             System.out.println("You didnt set any command on this button.");
         }
-    }
-
-    public void setCommandToKey(String key, Command command){
-        keysCommandHashMap.replace(key, command);
     }
 }
