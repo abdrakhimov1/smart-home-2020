@@ -4,16 +4,17 @@ import com.coolcompany.smarthome.events.SensorEventsManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.sbt.mipt.oop.RemoteControlI;
+import ru.sbt.mipt.oop.alarm.Alarm;
 import ru.sbt.mipt.oop.api.adapter.Adapter;
 import ru.sbt.mipt.oop.api.adapter.DoorSensorEventGetterImpl;
 import ru.sbt.mipt.oop.api.adapter.LightSensorEventGetterImpl;
+import ru.sbt.mipt.oop.api.adapter.SensorEventGetter;
 import ru.sbt.mipt.oop.condition.HomeConditionImplementation;
 import ru.sbt.mipt.oop.event_handlers.*;
 import ru.sbt.mipt.oop.home.SmartHome;
 import ru.sbt.mipt.oop.rc.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Configuration
 public class SpringConfiguration {
@@ -25,16 +26,16 @@ public class SpringConfiguration {
 
     @Bean
     Adapter eventSolverImplementationAdapter(){
-        return new Adapter(eventSolver(), smartHome(), doorSensorEventGetter(), lightSensorEventGetter());
+        return new Adapter(eventSolver(), smartHome(), sensorEventGetters());
     }
 
     @Bean
-    DoorSensorEventGetterImpl doorSensorEventGetter(){
+    SensorEventGetter doorSensorEventGetter(){
         return new DoorSensorEventGetterImpl(getTypeReturner());
     }
 
     @Bean
-    LightSensorEventGetterImpl lightSensorEventGetter(){
+    SensorEventGetter lightSensorEventGetter(){
         return new LightSensorEventGetterImpl(getTypeReturner());
     }
 
@@ -77,7 +78,28 @@ public class SpringConfiguration {
 
     @Bean
     EventProcessor eventProcessor(){
-        return new EventProcessor(smartHome(), eventSolver(), eventGenerator());
+        return new EventProcessor(smartHome(), eventGenerator(), eventSolver(), eventSolverDecorator());
+    }
+
+    @Bean
+    List<GeneralEvent> eventHandlersList(){
+        return new ArrayList<>(){
+            {
+                add(doorEventHandler());
+                add(lightEventHandler());
+                add(hallDoorEventHandler());
+            }
+        };
+    }
+
+    @Bean
+    Alarm alarm(){
+        return new Alarm(1111);
+    }
+
+    @Bean
+    EventSolver eventSolverDecorator(){
+        return new EventSolverDecorator(eventHandlersList(), alarm());
     }
 
     @Bean
@@ -144,6 +166,17 @@ public class SpringConfiguration {
                 put("DoorIsUnLocked", SensorEventType.DOOR_UNLOCKED);
             }
         };
+    }
+
+    @Bean
+    Collection<SensorEventGetter> sensorEventGetters(){
+        return new ArrayList<>(){
+            {
+            add(doorSensorEventGetter());
+            add(lightSensorEventGetter());
+            }
+        };
+
     }
 
     @Bean
