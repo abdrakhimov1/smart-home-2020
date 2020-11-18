@@ -3,7 +3,7 @@ package ru.sbt.mipt.oop.spring.utils;
 import com.coolcompany.smarthome.events.SensorEventsManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.sbt.mipt.oop.RemoteControlI;
+import ru.sbt.mipt.oop.RemoteControlImpl;
 import ru.sbt.mipt.oop.alarm.Alarm;
 import ru.sbt.mipt.oop.api.adapter.Adapter;
 import ru.sbt.mipt.oop.api.adapter.DoorSensorEventGetterImpl;
@@ -94,7 +94,7 @@ public class SpringConfiguration {
 
     @Bean
     Alarm alarm(){
-        return new Alarm(1111);
+        return new Alarm(alarmCode());
     }
 
     @Bean
@@ -138,20 +138,22 @@ public class SpringConfiguration {
     }
 
     @Bean
-    public RemoteControlI remoteControl(Command activateAlarm,
-                                        Command turnOnAlarmingMode,
-                                        Command closeHallDoor,
-                                        Command turnOffHallLight,
-                                        Command turnOnAllLights,
-                                        Command turnOffAllLights) {
-        RemoteControlI remoteControl = new RemoteControlI();
-        remoteControl.setCommand("A", activateAlarm);
-        remoteControl.setCommand("B", turnOnAlarmingMode);
-        remoteControl.setCommand("C", closeHallDoor);
-        remoteControl.setCommand("D", turnOffHallLight);
-        remoteControl.setCommand("1", turnOnAllLights);
-        remoteControl.setCommand("2", turnOffAllLights);
-        return remoteControl;
+    RemoteControl remoteControl() {
+        return new RemoteControlImpl(remoteControlCommands());
+    }
+
+    @Bean
+    Map<String, Command> remoteControlCommands() {
+        return new HashMap<>(){
+            {
+                put("A", activateAlarm(smartHome(), alarmCode()));
+                put("B", turnOnAlarmingMode());
+                put("C", closeHallDoor(smartHome()));
+                put("D", turnOffHallLight(smartHome()));
+                put("1", turnOnAllLights(smartHome()));
+                put("2", turnOffAllLights(smartHome()));
+            }
+        };
     }
 
     @Bean
