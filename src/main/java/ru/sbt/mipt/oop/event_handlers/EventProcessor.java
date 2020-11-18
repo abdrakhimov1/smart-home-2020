@@ -2,21 +2,24 @@ package ru.sbt.mipt.oop.event_handlers;
 
 import ru.sbt.mipt.oop.home.SmartHome;
 
+import java.util.Iterator;
+
 public class EventProcessor {
 
-    SmartHome smartHome;
-    EventSolver eventSolver;
-    EventGenerator eventGenerator;
-    EventSolverDecorator eventSolverDecorator;
+    final SmartHome smartHome;
+    final EventSolver eventSolver;
+    final EventGenerator eventGenerator;
+    final SensorEvent event;
+    final EventSolver eventSolverDecorator;
 
 
 
-    public EventProcessor(SmartHome smartHome, EventSolverWithEvents eventSolver, EventGenerator eventGenerator) {
-        this.eventSolver = eventSolver;
+    public EventProcessor(SmartHome smartHome, EventGenerator eventGenerator, EventSolver eventSolver, EventSolver eventSolverDecorator) {
         this.eventGenerator = eventGenerator;
         this.smartHome = smartHome;
-        this.eventSolverDecorator = new EventSolverDecorator(eventSolver, new AlarmEventHandler(smartHome), smartHome);
-
+        this.eventSolver = eventSolver;
+        this.event = eventGenerator.makeEvent();
+        this.eventSolverDecorator = eventSolverDecorator;
     }
 
     public void processEvent(){

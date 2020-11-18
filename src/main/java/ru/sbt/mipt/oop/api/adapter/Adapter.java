@@ -16,13 +16,12 @@ public class Adapter implements com.coolcompany.smarthome.events.EventHandler {
 
     private final EventSolver eventSolver;
     private SmartHome smartHome;
-    private final Collection<SensorEventGetter> sensorEventGetters = new ArrayList<>();
+    private Collection<SensorEventGetter> sensorEventGetters;
 
-    public Adapter(EventSolver eventSolver, SmartHome smartHome, SensorEventGetter doorSensorEventGetter, SensorEventGetter lightSensorEventGetter) {
+    public Adapter(EventSolver eventSolver, SmartHome smartHome,  Collection<SensorEventGetter> sensorEventGetters) {
         this.eventSolver = eventSolver;
         this.smartHome = smartHome;
-        this.sensorEventGetters.add(doorSensorEventGetter);
-        this.sensorEventGetters.add(lightSensorEventGetter);
+        this.sensorEventGetters = sensorEventGetters;
     }
 
 
