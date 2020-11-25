@@ -91,7 +91,7 @@ public class SpringConfiguration {
 
     @Bean
     EventSolver eventSolverDecorator(){
-        return new EventSolverDecorator(eventHandlersList(), alarm(), eventSolver(), getTypeReturner());
+        return new EventSolverDecorator(eventHandlersList());
     }
 
     @Bean

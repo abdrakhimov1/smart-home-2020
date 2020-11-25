@@ -1,6 +1,7 @@
 package ru.sbt.mipt.oop.event_handlers;
 
 import ru.sbt.mipt.oop.alarm.Alarm;
+import ru.sbt.mipt.oop.alarm.WarningState;
 import ru.sbt.mipt.oop.home.SmartHome;
 
 import java.util.List;
@@ -8,31 +9,39 @@ import java.util.Map;
 
 public class EventSolverDecorator implements EventSolver {
 
-    private final Alarm alarm;
+
 
     private final List<GeneralEvent> eventHandlersList;
-    private EventSolver eventSolver;
-    private final Map<String, SensorEventType> adaptedEventType;
 
 
-    public EventSolverDecorator(List<GeneralEvent> eventHandlersList, Alarm alarm, EventSolver eventSolver, Map<String, SensorEventType> sensorEventTypes) {
-        this.alarm = alarm;
+
+    public EventSolverDecorator(List<GeneralEvent> eventHandlersList) {
+
         this.eventHandlersList = eventHandlersList;
-        this.eventSolver = eventSolver;
-        this.adaptedEventType = sensorEventTypes;
+
+
     }
 
-    private SensorEventType decorate(SensorEventType eventType) {
-        return adaptedEventType.get(eventType);
+    private boolean isAlarm(SensorEvent event) {
+        return event.getType() == SensorEventType.ALARM_DEACTIVATE || event.getType() == SensorEventType.ALARM_ACTIVATE;
+    }
+
+    private void standardAccess(SensorEvent event, SmartHome smartHome) {
+        eventHandlersList.forEach(handler -> handler.handleEvent(event, smartHome));
     }
 
     @Override
     public void solveEvent(SmartHome smartHome, SensorEvent event) {
-        for (GeneralEvent handler : eventHandlersList){
-            SensorEventType myEventType = decorate(event.getType());
-            if (myEventType == null) return;
-            SensorEvent newEvent = new SensorEvent(myEventType, event.getObjectId());
-            handler.handleEvent(newEvent, smartHome);
+        Alarm alarm = smartHome.getAlarm();
+        if (alarm == null || isAlarm(event)) {
+            standardAccess(event, smartHome);
+            return;
+        }
+        if (alarm.isAlarmed()) alarm.changeState(new WarningState(alarm));
+        if (alarm.isWarning()) {
+            System.out.println("Sending sms");
+            return;
         }
     }
+
 }
