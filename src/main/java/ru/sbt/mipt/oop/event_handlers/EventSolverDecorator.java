@@ -2,36 +2,37 @@ package ru.sbt.mipt.oop.event_handlers;
 
 import ru.sbt.mipt.oop.alarm.Alarm;
 import ru.sbt.mipt.oop.home.SmartHome;
-import ru.sbt.mipt.oop.warning_senders.WarningSolver;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class EventSolverDecorator implements EventSolver {
 
     private final Alarm alarm;
 
     private final List<GeneralEvent> eventHandlersList;
+    private EventSolver eventSolver;
+    private final Map<String, SensorEventType> adaptedEventType;
 
 
-    public EventSolverDecorator(List<GeneralEvent> eventHandlersList, Alarm alarm) {
+    public EventSolverDecorator(List<GeneralEvent> eventHandlersList, Alarm alarm, EventSolver eventSolver, Map<String, SensorEventType> sensorEventTypes) {
         this.alarm = alarm;
         this.eventHandlersList = eventHandlersList;
+        this.eventSolver = eventSolver;
+        this.adaptedEventType = sensorEventTypes;
+    }
+
+    private SensorEventType decorate(SensorEventType eventType) {
+        return adaptedEventType.get(eventType);
     }
 
     @Override
     public void solveEvent(SmartHome smartHome, SensorEvent event) {
-
-        if (alarm.isAlarmed()) {
-            alarm.alarm();
-        }
-        if (alarm.isWarning()) {
-            WarningSolver solver = new WarningSolver("sms");
-            solver.solveWarning();
-            return;
-        }
-        for (GeneralEvent event1 : eventHandlersList) {
-            event1.handleEvent(event, smartHome);
+        for (GeneralEvent handler : eventHandlersList){
+            SensorEventType myEventType = decorate(event.getType());
+            if (myEventType == null) return;
+            SensorEvent newEvent = new SensorEvent(myEventType, event.getObjectId());
+            handler.handleEvent(newEvent, smartHome);
         }
     }
 }

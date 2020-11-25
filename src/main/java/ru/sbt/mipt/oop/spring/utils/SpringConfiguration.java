@@ -81,13 +81,7 @@ public class SpringConfiguration {
 
     @Bean
     List<GeneralEvent> eventHandlersList(){
-        return new ArrayList<>(){
-            {
-                add(doorEventHandler());
-                add(lightEventHandler());
-                add(hallDoorEventHandler());
-            }
-        };
+        return Arrays.asList(doorEventHandler(), lightEventHandler(), hallDoorEventHandler());
     }
 
     @Bean
@@ -97,7 +91,7 @@ public class SpringConfiguration {
 
     @Bean
     EventSolver eventSolverDecorator(){
-        return new EventSolverDecorator(eventHandlersList(), alarm());
+        return new EventSolverDecorator(eventHandlersList(), alarm(), eventSolver(), getTypeReturner());
     }
 
     @Bean
@@ -116,12 +110,6 @@ public class SpringConfiguration {
 
     @Bean
     Collection<SensorEventGetter> sensorEventGetters(){
-        return new ArrayList<>(){
-            {
-            add(doorSensorEventGetter());
-            add(lightSensorEventGetter());
-            }
-        };
-
+        return Arrays.asList(doorSensorEventGetter(), lightSensorEventGetter());
     }
 }
