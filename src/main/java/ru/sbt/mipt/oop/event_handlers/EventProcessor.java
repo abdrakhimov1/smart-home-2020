@@ -10,11 +10,11 @@ public class EventProcessor {
     final EventSolver eventSolver;
     final EventGenerator eventGenerator;
     final SensorEvent event;
-    final EventSolver eventSolverDecorator;
+    final GeneralEvent eventSolverDecorator;
 
 
 
-    public EventProcessor(SmartHome smartHome, EventGenerator eventGenerator, EventSolver eventSolver, EventSolver eventSolverDecorator) {
+    public EventProcessor(SmartHome smartHome, EventGenerator eventGenerator, EventSolver eventSolver, GeneralEvent eventSolverDecorator) {
         this.eventGenerator = eventGenerator;
         this.smartHome = smartHome;
         this.eventSolver = eventSolver;
@@ -27,7 +27,7 @@ public class EventProcessor {
         SensorEvent event = eventGenerator.makeEvent();
         while (event != null) {
             System.out.println("Got event: " + event);
-            eventSolverDecorator.solveEvent(smartHome, event);
+            eventSolverDecorator.handleEvent(event, smartHome);
             event = eventGenerator.makeEvent();
         }
     }

@@ -90,7 +90,7 @@ public class SpringConfiguration {
     }
 
     @Bean
-    EventSolver eventSolverDecorator(){
+    GeneralEvent eventSolverDecorator(){
         return new EventSolverDecorator(eventHandlersList());
     }
 

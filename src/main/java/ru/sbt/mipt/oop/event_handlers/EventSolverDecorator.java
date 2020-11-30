@@ -5,20 +5,15 @@ import ru.sbt.mipt.oop.alarm.WarningState;
 import ru.sbt.mipt.oop.home.SmartHome;
 
 import java.util.List;
-import java.util.Map;
 
-public class EventSolverDecorator implements EventSolver {
-
+public class EventSolverDecorator implements GeneralEvent {
 
 
     private final List<GeneralEvent> eventHandlersList;
 
-
-
     public EventSolverDecorator(List<GeneralEvent> eventHandlersList) {
 
         this.eventHandlersList = eventHandlersList;
-
 
     }
 
@@ -31,7 +26,7 @@ public class EventSolverDecorator implements EventSolver {
     }
 
     @Override
-    public void solveEvent(SmartHome smartHome, SensorEvent event) {
+    public void handleEvent(SensorEvent event, SmartHome smartHome) {
         Alarm alarm = smartHome.getAlarm();
         if (alarm == null || isAlarm(event)) {
             standardAccess(event, smartHome);
@@ -43,5 +38,4 @@ public class EventSolverDecorator implements EventSolver {
             return;
         }
     }
-
 }
